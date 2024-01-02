@@ -138,7 +138,7 @@ const Tip = () => {
         <Markdown>
             {`
 歡迎使用 Tailwind Translator！
-此工具專為被 Tailwind 養壞，但必須和其他團隊合作的懶人所設計。
+此工具專為需要切換 Tailwind 與 vanilla css 寫法的懶人所設計。
 
 這個工具可以幫助您將 Tailwind CSS 類別轉換為普通的 CSS 代碼。以下是如何使用此工具的簡單指南：
 
