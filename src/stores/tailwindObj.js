@@ -15296,11 +15296,15 @@ export const tailwindList = Object.values(tailwindObj).reduce((acc, h3Array) => 
     return acc;
 }, []);
 
+const customClassList = [
+    {class:'.bg-blur',css:'backdrop-filter: blur(10px);'},
+]
+
 export const getCss=(classText)=>{
     let cssText=""
     const unParseClassList = []
     classText.split(' ').forEach((el,i)=>{
-        const findClass = tailwindList.find(ele=>ele.class.replace(".","")===el)
+        const findClass = [...tailwindList,...customClassList].find(ele=>ele.class.replace(".","")===el)
         if(findClass){
             cssText += `${cssText.length===0?'':'\n'}${findClass.css}`
         }else{
