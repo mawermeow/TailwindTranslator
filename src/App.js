@@ -50,7 +50,7 @@ const App = () => {
                 allTextToCopy += getCssText(value, key) + '\n';
             }
         });
-        copyText(allTextToCopy);
+        copyText(allTextToCopy,()=>appendBubble('success','copy success!'));
     };
 
     // 使用 useEffect 監聽 className 和 tailwindClasses 的變化
