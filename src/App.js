@@ -20,7 +20,7 @@ const App = () => {
         setTailwindClasses(value);
     };
 
-    const handleCopy = (value, key) => {
+    const getCssText=(value, key)=>{
         const exception = {
             first:'first-child',last:'last-child'
         }
@@ -33,15 +33,20 @@ const App = () => {
                     ? `.${className}:${exception[key]} {\n${value}\n}`
                     : `.${className}:${key} {\n${value}\n}`;
         }
+        return textToCopy
+    }
+
+    const handleCopy = (value, key) => {
+        const textToCopy = getCssText(value, key)
         copyText(textToCopy);
     };
 
     const handleCopyAll = () => {
         let allTextToCopy = '';
         const formattedCss = formatCss(tailwindClasses);
-        Object.entries(className?outputWithClassName:output).forEach(([key, value]) => {
+        Object.entries(output).forEach(([key, value]) => {
             if(formattedCss[key]){
-                allTextToCopy += value + '\n';
+                allTextToCopy += getCssText(value, key) + '\n';
             }
         });
         copyText(allTextToCopy);
