@@ -148,8 +148,8 @@ const Tip = () => {
         positionOffset={10}
         edgeDistance={16}
     >
-        <FadeDiv visible={visible} className="fixed inset-0 bg-black/30 bg-blur pointer-events-auto" onClick={()=>uiState.tip.visible=false}></FadeDiv>
-        <FadeDiv visible={visible} wouldRemove={false} className="w-full max-w-xl bg-white bg-blur rounded border border-cyan-600 px-6 py-4 pointer-events-auto">
+        <FadeDiv visible={visible} className={`fixed inset-0 bg-black/30 bg-blur ${visible?'pointer-events-auto':''}`} onClick={()=>uiState.tip.visible=false}></FadeDiv>
+        <FadeDiv visible={visible} wouldRemove={false} className={`w-full max-w-xl m-6 md:m-auto bg-white bg-blur rounded border border-cyan-600 px-6 py-4 ${visible?'pointer-events-auto':''}`}>
         <Markdown>
             {`
 歡迎使用 Tailwind Translator！
