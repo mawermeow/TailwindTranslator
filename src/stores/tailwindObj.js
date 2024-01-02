@@ -15302,7 +15302,7 @@ export const getCss=(classText)=>{
     classText.split(' ').forEach((el,i)=>{
         const findClass = tailwindList.find(ele=>ele.class.replace(".","")===el)
         if(findClass){
-            cssText += `${i===0?'':'\n'}${findClass.css}`
+            cssText += `${cssText.length===0?'':'\n'}${findClass.css}`
         }else{
             if(el){
                 unParseClassList.push(el)

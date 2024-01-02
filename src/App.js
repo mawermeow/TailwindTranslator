@@ -59,13 +59,13 @@ const App = () => {
     }, [className, tailwindClasses]); // 依賴項
 
     return (
-        <FadeDiv visible={true} className={`fixed inset-0 flex flex-col gap-4 p-10 pointer-events-auto`}>
-            <div className="w-full flex gap-4 justify-center">
+        <FadeDiv visible={true} className={`fixed inset-0 flex flex-col items-center gap-4 p-10 pointer-events-auto`}>
+            <div className="w-full max-w-5xl flex gap-4 justify-center">
                 <div className="text-2xl font-bold">Tailwind Translator</div>
             </div>
 
             {/* 自定義類別名稱輸入 */}
-            <div className="flex gap-1 border border-cyan-600 rounded w-full overflow-hidden">
+            <div className="flex gap-1 border border-cyan-600 rounded w-full max-w-5xl overflow-hidden">
                 <div className="bg-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
                     ClassName
                 </div>
@@ -79,7 +79,7 @@ const App = () => {
             </div>
 
             {/* Tailwind CSS 規則輸入 */}
-            <div className="flex gap-1 border border-cyan-600 rounded w-full">
+            <div className="flex gap-1 border border-cyan-600 rounded w-full max-w-5xl">
                 <div className="bg-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
                     Tailwind
                 </div>
@@ -88,7 +88,7 @@ const App = () => {
             </div>
 
             {/* 輸出並複製 */}
-            <div>
+            <div className="w-full max-w-5xl">
                 {Object.entries(output).map(([key, value]) => {
                     if (!value) {
                         return <div key={key}></div>
