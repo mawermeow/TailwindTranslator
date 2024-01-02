@@ -15310,7 +15310,6 @@ export const getCss=(classText)=>{
         }
     })
     if(unParseClassList.length>0){
-        console.log(unParseClassList)
         cssText += `${cssText.length===0?"":"\n"}/*`
         unParseClassList.forEach(el=>{
             cssText += ` ${el}`
