@@ -11,6 +11,7 @@ import {FaRegCircleQuestion} from "react-icons/fa6";
 import {FaRegCopy} from "react-icons/fa";
 import BubbleModal, {appendBubble} from "./components/UI/BubbleModal";
 import Scroller from "./components/UI/Scroller";
+import Img from "./components/UI/Img";
 
 const App = () => {
     const [tailwindClasses, setTailwindClasses] = useState("");
@@ -67,8 +68,11 @@ const App = () => {
 
     return (
         <FadeDiv visible={true} className={`fixed inset-0 flex flex-col items-center gap-4 p-10 pointer-events-auto`}>
-            <div className="w-full max-w-5xl flex gap-4 justify-center">
-                <div className="text-2xl font-bold">Tailwind Translator</div>
+            <div className="w-full max-w-5xl flex flex-col gap-4 items-center justify-center">
+
+                {/*<Img className="w-full max-w-5xl -mb-7" src="./media/images/banner.png"/>*/}
+                <Img className="w-48 md:w-80 -mb-5" src="./media/images/banner.png"/>
+                <div className="text-2xl md:text-4xl font-bold">Tailwind Translator</div>
             </div>
 
             {/* 自定義類別名稱輸入 */}
