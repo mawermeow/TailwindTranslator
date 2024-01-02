@@ -27,10 +27,10 @@ const App = () => {
         if (className) {
             // 如果 className 為空，只複製轉化後的內容
             textToCopy = key === 'normal'
-                ? `.${className}{${value}\n}`
+                ? `.${className}{\n${value}\n}`
                 :Object.keys(exception).includes(key)
                     ? `.${className}:${exception[key]} {\n${value}\n}`
-                    : `.${className}:${key} {${value}\n}`;
+                    : `.${className}:${key} {\n${value}\n}`;
         }
         copyText(textToCopy);
     };
@@ -71,20 +71,22 @@ const App = () => {
             </div>
 
             {/* 輸出並複製 */}
-            {Object.entries(output).map(([key, value]) => {
-                if (!value) {
-                    return <div key={key}></div>
-                }
-                return (
-                    <div key={key} className="flex flex-col border rounded border-cyan-600 p-4">
-                        <div className="hover:text-cyan-500 img-btn active:text-black"
-                             onClick={() => handleCopy(value, key)}>
-                            <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{key}</div>
-                            <div className="whitespace-pre-wrap">{value}</div>
+            <div>
+                {Object.entries(output).map(([key, value]) => {
+                    if (!value) {
+                        return <div key={key}></div>
+                    }
+                    return (
+                        <div key={key} className="flex flex-col border rounded border-cyan-600 p-4 mb-4">
+                            <div className="hover:text-cyan-500 img-btn active:text-black"
+                                 onClick={() => handleCopy(value, key)}>
+                                <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{key}</div>
+                                <div className="whitespace-pre-wrap">{value}</div>
+                            </div>
                         </div>
-                    </div>
-                )
-            })}
+                    )
+                })}
+            </div>
             <Tip/>
             <div
                 className="w-8 aspect-square svg-w-full fixed bottom-4 right-4"
