@@ -2,6 +2,7 @@ import {motion,AnimatePresence} from "framer-motion";
 import {useState,useEffect} from 'react'
 import {useSnapshot} from "valtio";
 import {uiState} from "../../stores/model";
+import Img from "./Img";
 
 export const appendBubble=(type,text)=>{
     uiState.bubble.bubbleList = [

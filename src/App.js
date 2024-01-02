@@ -4,7 +4,7 @@ import FadeDiv from "./components/UI/FadeDiv";
 import { formatCss, getCss } from "./stores/tailwindObj";
 import { copyText } from "./utils/download";
 import Markdown from "./components/UI/Markdown";
-import ContextMenuContainer, {hoverMenuProps} from "./components/UI/ContextMenuContainer";
+import ContextMenuContainer, {clickMenuProps, hoverMenuProps} from "./components/UI/ContextMenuContainer";
 import {useSnapshot} from "valtio";
 import {uiState} from "./stores/model";
 import {FaRegCircleQuestion} from "react-icons/fa6";
@@ -122,13 +122,15 @@ const App = () => {
             </div>
             <Tip/>
             <div
-                className="w-8 aspect-square svg-w-full fixed bottom-4 right-4"
-                {...hoverMenuProps(
-                    'tip',
-                    () => uiState.tip.visible = true,
-                    () => uiState.tip.visible = false,
+                className="w-8 aspect-square svg-w-full fixed bottom-4 right-4 img-btn"
+                {...clickMenuProps(
+                    // 'tip',
+                    () => uiState.tip.visible = !uiState.tip.visible,
+                    // () => uiState.tip.visible = false,
                 )}
-            ><FaRegCircleQuestion/></div>
+            >
+                <FaRegCircleQuestion/>
+            </div>
             <BubbleModal/>
         </FadeDiv>
     );
@@ -146,9 +148,8 @@ const Tip = () => {
         positionOffset={10}
         edgeDistance={16}
     >
-        <FadeDiv visible={visible} className="w-full max-w-xl bg-white bg-blur rounded border border-cyan-600 px-4 py-2">
-
-
+        <FadeDiv visible={visible} className="fixed inset-0 bg-black/30 bg-blur pointer-events-auto" onClick={()=>uiState.tip.visible=false}></FadeDiv>
+        <FadeDiv visible={visible} wouldRemove={false} className="w-full max-w-xl bg-white bg-blur rounded border border-cyan-600 px-6 py-4 pointer-events-auto">
         <Markdown>
             {`
 歡迎使用 Tailwind Translator！
@@ -168,6 +169,10 @@ const Tip = () => {
 
 這個工具支持常規 CSS 以及特殊的偽類（例如：\`:first-child\` 和 \`:last-child\`）。請隨意使用並將您的 Tailwind CSS 轉換為普通的 CSS！`}
         </Markdown>
+            <div className="w-full flex justify-end">
+                <Img className="w-48" src="./media/images/sticker.png"/>
+            </div>
+
         </FadeDiv>
     </ContextMenuContainer>
 }
