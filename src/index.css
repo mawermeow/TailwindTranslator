@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;300;400;500;700;900&display=swap');
+@import url('fonts/font.css');
+
+body {
+  margin: 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+*, :before, :after {
+  box-sizing: unset;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+  div#TailwindTranslator *,
+  div#TailwindTranslator *:before,
+  div#TailwindTranslator *:after {
+    box-sizing: border-box;
+    border: 0 solid #e5e7eb;
+  }
+  div#TailwindTranslator{
+    @apply fixed scroll-smooth z-[1106] pointer-events-none select-none;
+    font-family: "Quicksand", 'Noto Sans TC',  sans-serif;
+  }
+  div#TailwindTranslator .svg-w-full svg { @apply w-full pointer-events-none; }
+  div#TailwindTranslator .svg-h-full svg { @apply h-full pointer-events-none; }
+  div#TailwindTranslator .fade-div-hide .img-btn {@apply pointer-events-none; }
+  div#TailwindTranslator .fade-div-hide .pointer-events-auto {@apply pointer-events-none; }
+  div#TailwindTranslator .img-btn { @apply pointer-events-auto cursor-pointer select-none z-20; -webkit-tap-highlight-color: transparent;}
+  div#TailwindTranslator .img-btn:focus { outline: none; box-shadow: none; }
+  div#TailwindTranslator .img-btn > img { @apply w-full object-contain select-none; }
+  div#TailwindTranslator .team-controlled .img-btn,
+  div#TailwindTranslator .team-controlled .pointer-events-auto {pointer-events: none;}
+  div#TailwindTranslator .team-controlled .canTouch{pointer-events: auto;}
+  div#TailwindTranslator .team-controlled .canTouch .img-btn,
+  div#TailwindTranslator .team-controlled .canTouch .pointer-events-auto {pointer-events: auto;}
+  div#TailwindTranslator .bg-blur{backdrop-filter: blur(10px)}
+  /*div#TailwindTranslator .markdown {@apply text-base}*/
+  div#TailwindTranslator .markdown ol,ul{@apply py-4}
+  div#TailwindTranslator .markdown ol{@apply list-decimal ml-7}
+  div#TailwindTranslator .markdown ul{@apply list-disc ml-7}
+  div#TailwindTranslator .markdown a{@apply text-[#98E9FB]  opacity-90 hover:opacity-100 cursor-pointer}
+  div#TailwindTranslator .info .markdown del{text-decoration: none; @apply text-[#b3b3b3] font-normal}
+  div#TailwindTranslator .info .markdown del.text-justify{text-align: start}
+  div#TailwindTranslator .info .markdown h4{@apply text-xl block mt-2 mb-2 text-[#E2B863]}
+  div#TailwindTranslator .info .markdown h3{@apply text-2xl block font-bold mt-4 mb-4}
+
+  div#TailwindTranslator .scroll-none::-webkit-scrollbar {
+    -webkit-appearance: none;
+    display: none;
+  }
+
+  /*取消移動端點擊高亮*/
+  div#TailwindTranslator {-webkit-tap-highlight-color: rgba(0,0,0,0);}
+  @media (prefers-color-scheme: dark){
+    body{
+      background-color: #FFFFFF;
+      color: #000000;
+    }
+  }
+}
