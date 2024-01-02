@@ -75,7 +75,7 @@ const App = () => {
                 <div className="bg-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
                     ClassName
                 </div>
-                <Input className="rounded px-2 text-cyan-600 flex-1" value={className}
+                <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={className}
                        onChange={(value) => setClassName(value)}/>
                 <div onClick={handleCopyAll} className="img-btn px-2 border-l border-cyan-600 bg-cyan-600 text-white hover:text-cyan-600 hover:bg-white active:text-white active:bg-cyan-600 flex items-center justify-center">
                     <div className="svg-w-full w-4">
@@ -89,7 +89,7 @@ const App = () => {
                 <div className="bg-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
                     Tailwind
                 </div>
-                <Input className="rounded px-2 text-cyan-600 flex-1" value={""}
+                <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={""}
                        onChange={(value) => handleCssGeneration(value)}/>
             </div>
 

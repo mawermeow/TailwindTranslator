@@ -14,7 +14,7 @@ function BubbleModal() {
     const {bubbleList}=useSnapshot(uiState.bubble)
 
     return (
-        <div className="fixed bottom-24 w-full flex justify-center sm:w-auto sm:bottom-4 sm:left-4 pointer-events-none z-50">
+        <div className="fixed bottom-8 w-full flex justify-center sm:w-auto sm:bottom-4 sm:left-4 pointer-events-none z-50">
             <div className="flex flex-col gap-2 items-start">
                 {bubbleList.map((bubble, index) => (
                     <Bubble key={index} bubble={bubble} />
