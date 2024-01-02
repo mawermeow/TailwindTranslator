@@ -8,7 +8,9 @@ export const uiState = proxy({
     teamEventText:'', // 接收團導對專案執行的 onEvent 事件
     shouldUpdateTeamVolume:false, // 接收團導對專案的音量控制設定
     mouse:{clientX:0, clientY:0},
-   tip:{visible:false},
+    tip:{visible:false},
+    bubble:{bubbleList:[]},
+
 })
 
 window.frontEnd.uiState = uiState

@@ -9,6 +9,7 @@ import {useSnapshot} from "valtio";
 import {uiState} from "./stores/model";
 import {FaRegCircleQuestion} from "react-icons/fa6";
 import {FaRegCopy} from "react-icons/fa";
+import BubbleModal, {appendBubble} from "./components/UI/BubbleModal";
 
 const App = () => {
     const [tailwindClasses, setTailwindClasses] = useState("");
@@ -38,7 +39,7 @@ const App = () => {
 
     const handleCopy = (value, key) => {
         const textToCopy = getCssText(value, key)
-        copyText(textToCopy);
+        copyText(textToCopy,()=>appendBubble('success','copy success!'));
     };
 
     const handleCopyAll = () => {
@@ -100,11 +101,11 @@ const App = () => {
                     }
                     return (
                         <div key={key}
-                             className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4"
+                             className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4 hover:text-cyan-500 active:text-black"
                              onClick={() => handleCopy(value, key)}
                         >
                             <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none"><FaRegCopy /></div>
-                            <div className="hover:text-cyan-500  active:text-black">
+                            <div>
                                 <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{key}</div>
                                 <div className="whitespace-pre-wrap">{value}</div>
                             </div>
@@ -121,6 +122,7 @@ const App = () => {
                     () => uiState.tip.visible = false,
                 )}
             ><FaRegCircleQuestion/></div>
+            <BubbleModal/>
         </FadeDiv>
     );
 }
