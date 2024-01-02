@@ -10,6 +10,7 @@ import {uiState} from "./stores/model";
 import {FaRegCircleQuestion} from "react-icons/fa6";
 import {FaRegCopy} from "react-icons/fa";
 import BubbleModal, {appendBubble} from "./components/UI/BubbleModal";
+import Scroller from "./components/UI/Scroller";
 
 const App = () => {
     const [tailwindClasses, setTailwindClasses] = useState("");
@@ -94,24 +95,26 @@ const App = () => {
             </div>
 
             {/* 輸出並複製 */}
-            <div className="w-full max-w-5xl">
-                {Object.entries(output).map(([key, value]) => {
-                    if (!value) {
-                        return <div key={key}></div>
-                    }
-                    return (
-                        <div key={key}
-                             className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4 hover:text-cyan-500 active:text-black"
-                             onClick={() => handleCopy(value, key)}
-                        >
-                            <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none"><FaRegCopy /></div>
-                            <div>
-                                <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{key}</div>
-                                <div className="whitespace-pre-wrap">{value}</div>
+            <div className="w-full max-w-5xl flex-1 relative">
+                <Scroller>
+                    {Object.entries(output).map(([key, value]) => {
+                        if (!value) {
+                            return <div key={key}></div>
+                        }
+                        return (
+                            <div key={key}
+                                 className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4 hover:text-cyan-500 active:text-black"
+                                 onClick={() => handleCopy(value, key)}
+                            >
+                                <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none"><FaRegCopy /></div>
+                                <div>
+                                    <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{key}</div>
+                                    <div className="whitespace-pre-wrap">{value}</div>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })}
+                </Scroller>
             </div>
             <Tip/>
             <div
