@@ -8,6 +8,7 @@ import ContextMenuContainer, {hoverMenuProps} from "./components/UI/ContextMenuC
 import {useSnapshot} from "valtio";
 import {uiState} from "./stores/model";
 import {FaRegCircleQuestion} from "react-icons/fa6";
+import {FaRegCopy} from "react-icons/fa";
 
 const App = () => {
     const [tailwindClasses, setTailwindClasses] = useState("");
@@ -35,6 +36,17 @@ const App = () => {
         copyText(textToCopy);
     };
 
+    const handleCopyAll = () => {
+        let allTextToCopy = '';
+        const formattedCss = formatCss(tailwindClasses);
+        Object.entries(className?outputWithClassName:output).forEach(([key, value]) => {
+            if(formattedCss[key]){
+                allTextToCopy += value + '\n';
+            }
+        });
+        copyText(allTextToCopy);
+    };
+
     // 使用 useEffect 監聽 className 和 tailwindClasses 的變化
     useEffect(() => {
         const formattedCss = formatCss(tailwindClasses);
@@ -53,12 +65,17 @@ const App = () => {
             </div>
 
             {/* 自定義類別名稱輸入 */}
-            <div className="flex gap-1 border border-cyan-600 rounded w-full">
+            <div className="flex gap-1 border border-cyan-600 rounded w-full overflow-hidden">
                 <div className="bg-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
                     ClassName
                 </div>
                 <Input className="rounded px-2 text-cyan-600 flex-1" value={className}
                        onChange={(value) => setClassName(value)}/>
+                <div onClick={handleCopyAll} className="img-btn px-2 border-l border-cyan-600 bg-cyan-600 text-white hover:text-cyan-600 hover:bg-white active:text-white active:bg-cyan-600 flex items-center justify-center">
+                    <div className="svg-w-full w-4">
+                        <FaRegCopy />
+                    </div>
+                </div>
             </div>
 
             {/* Tailwind CSS 規則輸入 */}
@@ -77,9 +94,12 @@ const App = () => {
                         return <div key={key}></div>
                     }
                     return (
-                        <div key={key} className="flex flex-col border rounded border-cyan-600 p-4 mb-4">
-                            <div className="hover:text-cyan-500 img-btn active:text-black"
-                                 onClick={() => handleCopy(value, key)}>
+                        <div key={key}
+                             className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4"
+                             onClick={() => handleCopy(value, key)}
+                        >
+                            <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none"><FaRegCopy /></div>
+                            <div className="hover:text-cyan-500  active:text-black">
                                 <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{key}</div>
                                 <div className="whitespace-pre-wrap">{value}</div>
                             </div>
