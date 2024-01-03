@@ -2,6 +2,7 @@ import { motion, useMotionValue, useTransform } from 'framer-motion';
 import React, { useRef, useEffect, useState } from 'react';
 import { useSnapshot } from "valtio";
 import { windowSizeState } from "../../stores/windowSizeState";
+import FadeDiv from "./FadeDiv";
 
 const Scroller = ({
                       isActive = true, // 用來確定是否啓用滾動功能
@@ -19,13 +20,14 @@ const Scroller = ({
                       children,
                       autoScroll=false, // 是否開啟自動滾動
                       updateScrollList=[], // 自動滾動偵測列表
-                      updatedScrollTo="", // 自動滾到哪 top, bottom, null
-                      visibleScrollTo="", // 可見時，是否滾動到 top, bottom, null
+                      updatedScrollTo = "", // 自動滾到哪 top, bottom, null
+                      visibleScrollTo = "", // 可見時，是否滾動到 top, bottom, null
+                      hasShadow = true, // 上下超過時是否顯示陰影
                       ...rest
                   }) => {
     const outerRef = useRef()
 
-    const {scrollHeightRatio, isScrollVisible, scrollPosition, shouldScroll,isUserScrolling} = useScroll(outerRef, hideDelay, isVisible,children)
+    const {scrollHeightRatio, isScrollVisible, scrollPosition, shouldScroll,isUserScrolling,shadowTop, shadowBottom} = useScroll(outerRef, hideDelay, isVisible,children)
 
     const thumbHeight = `${scrollHeightRatio * 100}%`
     const thumbTop = useTransform(
@@ -101,27 +103,32 @@ const Scroller = ({
     };
 
     return (
-        <div className="relative h-full w-full">
+        <div
+            className="relative h-full w-full">
+            <FadeDiv visible={hasShadow&&shadowTop} className="absolute top-0 w-full h-2 bg-gradient-to-b from-black/10 to-black/0"></FadeDiv>
+            <FadeDiv visible={hasShadow&&shadowBottom} className="absolute bottom-0 w-full h-2 bg-gradient-to-t from-black/10 to-black/0"></FadeDiv>
             <motion.div
-                className={`absolute inset-0 overflow-x-hidden scroll-none ${isActive ? 'overflow-y-scroll' : 'overflow-y-hidden'} ${noScrollClassName&&!shouldScroll?noScrollClassName:className}`} {...rest}
+                className={`absolute inset-0 overflow-x-hidden scroll-none ${isActive ? 'overflow-y-scroll' : 'overflow-y-hidden'} ${noScrollClassName && !shouldScroll ? noScrollClassName : className}`} {...rest}
                 ref={outerRef}
             >
                 {children}
             </motion.div>
-            {isActive&&shouldScroll && <motion.div
+
+            {isActive && shouldScroll && <motion.div
                 className={`absolute inset-y-0 ${trackClassName}`}
-                initial={{opacity:0}}
-                animate={existForever||(isScrollVisible && isVisible && trackClassName!=='') ? {opacity: 1} : {opacity: 0}}
+                initial={{opacity: 0}}
+                animate={existForever || (isScrollVisible && isVisible && trackClassName !== '') ? {opacity: 1} : {opacity: 0}}
                 transition={transition}
                 style={{scale}}
             />}
-            {isActive&&shouldScroll && <motion.div
-                className={`absolute ${canDragThumb?'pointer-events-auto':'pointer-events-none'} ${thumbClassName}`}
-                onMouseDown={canDragThumb?handleMouseDown:()=>{}}
-                initial={{opacity:0}}
-                animate={existForever||(isScrollVisible && isVisible) ? {opacity: 1} : {opacity: 0}}
+            {isActive && shouldScroll && <motion.div
+                className={`absolute ${canDragThumb ? 'pointer-events-auto' : 'pointer-events-none'} ${thumbClassName}`}
+                onMouseDown={canDragThumb ? handleMouseDown : () => {
+                }}
+                initial={{opacity: 0}}
+                animate={existForever || (isScrollVisible && isVisible) ? {opacity: 1} : {opacity: 0}}
                 transition={transition}
-                style={{top: thumbTop, height: thumbHeight,scale}}
+                style={{top: thumbTop, height: thumbHeight, scale}}
             />}
         </div>
     )
@@ -130,7 +137,7 @@ const Scroller = ({
 export default Scroller
 
 
-const useIsScrolling=(debounceTime = 100)=> {
+const useIsScrolling = (debounceTime = 100) => {
     const [isScrolling, setIsScrolling] = useState(false);
     const timeoutRef = useRef(null); // 使用 ref 来持有 timeout
 
@@ -176,6 +183,10 @@ const useScroll = (outerRef, hideDelay, isVisible,children) => {
 
     const {currentHeight}=useSnapshot(windowSizeState)
 
+    const [shadowTop, setShadowTop] = useState(false); // 顶部阴影
+    const [shadowBottom, setShadowBottom] = useState(false); // 底部阴影
+
+
     const debounce = (func, delay) => {
         clearTimeout(timer.current)
         timer.current = setTimeout(func, delay)
@@ -192,6 +203,12 @@ const useScroll = (outerRef, hideDelay, isVisible,children) => {
                 setIsScrollVisible(true)
                 debounce(() => setIsScrollVisible(false), hideDelay)
                 handleUserScroll();  // 新增這一行來檢測滾動事件
+
+
+                const scrollTop = outerElement.scrollTop;
+                const scrollBottom = outerElement.scrollHeight - outerElement.clientHeight - scrollTop;
+                setShadowTop(scrollTop > 10); // 如果頂部隱藏了内容，顯示上方陰影
+                setShadowBottom(scrollBottom > 10); // 如果底部隱藏了内容，顯示下方陰影
             }
         }
 
@@ -235,7 +252,7 @@ const useScroll = (outerRef, hideDelay, isVisible,children) => {
         }
     }, [hideDelay, isVisible,currentHeight,children])
 
-    return {scrollHeightRatio, isScrollVisible, scrollPosition, outerRef, shouldScroll,isUserScrolling}
+    return {scrollHeightRatio, isScrollVisible, scrollPosition, outerRef, shouldScroll,isUserScrolling,shadowTop,shadowBottom}
 }
 
 const smoothScrollTo = (element, target, duration) => {

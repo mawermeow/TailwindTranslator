@@ -75,64 +75,76 @@ const App = () => {
     }, [className, tailwindClasses]); // 依賴項
 
     return (
-        <FadeDiv visible={true} className={`fixed inset-0 flex flex-col items-center gap-4 p-10 pointer-events-auto`}>
-            <div className="w-full max-w-5xl flex flex-col gap-4 items-center justify-center">
-
-                {/*<Img className="w-full max-w-5xl -mb-7" src="./media/images/banner.png"/>*/}
-                <Img className="w-48 md:w-80 -mb-5" src="./media/images/banner.png"/>
-                <div className="text-2xl md:text-4xl font-bold">Tailwind Translator</div>
+        <FadeDiv visible={true} className={`fixed inset-0 flex justify-center`}>
+            <div className="absolute inset-0 z-0">
+                <Img className="w-full h-full object-cover " src="./media/images/bg.png"/>
             </div>
 
-            {/* 自定義類別名稱輸入 */}
-            <div className="flex gap-1 border border-cyan-600 rounded w-full max-w-5xl overflow-hidden">
-                <div className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
-                    ClassName
+            <div className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-10 mx-10">
+                <div className="w-full flex flex-col gap-4 items-center justify-center">
+                    <Img className="w-48 md:w-80 -mb-[18px]" src="./media/images/banner.png"/>
+                    <div className="text-2xl md:text-4xl font-bold">Tailwind Translator</div>
                 </div>
-                <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={className}
-                       onChange={(value) => uiState.className = value}/>
-                <FadeDiv visible={className} onClick={()=>uiState.className = ""} className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400"><IoIosCloseCircleOutline /></FadeDiv>
-            </div>
 
-            {/* Tailwind CSS 規則輸入 */}
-            <div className="flex gap-1 border border-cyan-600 rounded w-full max-w-5xl">
-                <div className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
-                    Tailwind
+                {/* 自定義類別名稱輸入 */}
+                <div className="flex gap-1 border border-cyan-600 rounded w-full overflow-hidden">
+                    <div
+                        className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
+                        ClassName
+                    </div>
+                    <Input className="w-full rounded px-2 text-cyan-600 flex-1 bg-transparent" value={className}
+                           onChange={(value) => uiState.className = value}/>
+                    <FadeDiv visible={className} onClick={() => uiState.className = ""}
+                             className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400 transition-colors"><IoIosCloseCircleOutline/></FadeDiv>
                 </div>
-                <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={tailwindClasses}
-                       onChange={(value) => handleCssGeneration(value)}/>
-                <FadeDiv visible={tailwindClasses} onClick={()=>uiState.tailwindClasses = ""} className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400"><IoIosCloseCircleOutline /></FadeDiv>
-            </div>
 
-            <div className="w-full max-w-5xl flex justify-end gap-2">
-                <TextBtn text="JS" onClick={handleCopyJSObj}/>
-                <TextBtn text="CSS" onClick={handleCopyAll}/>
-            </div>
+                {/* Tailwind CSS 規則輸入 */}
+                <div className="flex gap-1 border border-cyan-600 rounded w-full">
+                    <div
+                        className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
+                        Tailwind
+                    </div>
+                    <Input className="w-full rounded px-2 text-cyan-600 flex-1 bg-transparent" value={tailwindClasses}
+                           onChange={(value) => handleCssGeneration(value)}/>
+                    <FadeDiv visible={tailwindClasses} onClick={() => uiState.tailwindClasses = ""}
+                             className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400"><IoIosCloseCircleOutline/></FadeDiv>
+                </div>
 
-            {/* 輸出並複製 */}
-            <div className="w-full max-w-5xl flex-1 relative z-0">
-                <Scroller>
-                    {Object.entries(output).map(([key, value], index) => {
-                        if (!value) {
-                            return <div key={key}></div>
-                        }
-                        return (
-                            <div key={key}
-                                 className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4 hover:text-cyan-500 active:text-black"
-                                 onClick={() => handleCopy(value, key)}
-                            >
-                                <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none"><FaRegCopy /></div>
-                                <div>
-                                    <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{`${key}${{...pseudoClasses,...breakpoints}[key]?` - ${{...pseudoClasses,...breakpoints}[key]}`:""}`}</div>
-                                    <div className="whitespace-pre-wrap">{value}</div>
+                <div className="w-full flex justify-end gap-2">
+                    <TextBtn text="JS" onClick={handleCopyJSObj}/>
+                    <TextBtn text="CSS" onClick={handleCopyAll}/>
+                </div>
+
+                {/* 輸出並複製 */}
+                <div className="w-full flex-1 relative z-0">
+                    <Scroller>
+                        {Object.entries(output).map(([key, value], index) => {
+                            if (!value) {
+                                return <div key={key}></div>
+                            }
+                            return (
+                                <div key={key}
+                                     className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4 hover:text-cyan-500 active:text-black transition-all"
+                                     onClick={() => handleCopy(value, key)}
+                                >
+                                    <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none">
+                                        <FaRegCopy/></div>
+                                    <div>
+                                        <div
+                                            className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{`${key}${{...pseudoClasses, ...breakpoints}[key] ? ` - ${{...pseudoClasses, ...breakpoints}[key]}` : ""}`}</div>
+                                        <div className="whitespace-pre-wrap">{value}</div>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    })}
-                </Scroller>
+                            )
+                        })}
+                    </Scroller>
+                </div>
+
+
             </div>
 
             <div
-                className="w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600"
+                className="transition-colors w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600"
                 {...clickMenuProps(
                     // 'tip',
                     () => uiState.tip.visible = !uiState.tip.visible,
@@ -154,13 +166,15 @@ const Tip = () => {
     const {visible} = useSnapshot(uiState.tip)
 
     return <FadeDiv visible={visible}
-        className="fixed z-50 pointer-events-none inset-0 flex items-center justify-center"
+                    className="fixed z-50 pointer-events-none inset-0 flex items-center justify-center"
     >
-        <div className={`fixed z-30 inset-0 bg-black/30 bg-blur ${visible?'pointer-events-auto':''}`} onClick={()=>uiState.tip.visible=false}></div>
-        <div className={`relative z-40 w-full max-w-xl h-5/6 m-6 md:m-auto bg-white bg-blur rounded border border-cyan-600 px-6 py-4 ${visible?'pointer-events-auto':''}`}>
+        <div className={`fixed z-30 inset-0 bg-black/30 bg-blur ${visible ? 'pointer-events-auto' : ''}`}
+             onClick={() => uiState.tip.visible = false}></div>
+        <div
+            className={`relative z-40 w-full max-w-xl h-5/6 m-6 md:m-auto bg-white bg-blur rounded border border-cyan-600 px-6 py-4 ${visible ? 'pointer-events-auto' : ''}`}>
 
             <Scroller
-                thumbClassName = '-right-5 w-1 bg-cyan-600/50 rounded-full'
+                thumbClassName='-right-5 w-1 bg-cyan-600/50 rounded-full'
             >
                 <div className="absolute">
                     <Markdown>
@@ -200,7 +214,7 @@ JS按鈕可以將 normal 中的內容轉換為 JS 的 style 物件（style 不�
     </FadeDiv>
 }
 
-const TextBtn=({text,onClick})=> {
+const TextBtn = ({text, onClick}) => {
     return <div
         onClick={onClick}
         className="pointer-events-auto cursor-pointer rounded bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border border-cyan-600 text-center px-2 hover:text-cyan-600 hover:to-white hover:via-white hover:from-white active:text-white active:to-cyan-600 active:via-cyan-600 active:from-[#076A82]">
