@@ -1,6 +1,7 @@
 import {getSheetDataById} from "./data";
 import {uiState} from "./model";
 import {keydownSetting} from "../utils/keydown";
+import {cheatEvent} from "./cheatMiddleWare";
 
 window.frontEnd.eventSubscribe((eventModule, eventTitle, eventScene) => {
     const moduleList = ['sidebar', 'intro', 'miniMap','audioPlayer','audioMessage'] // 註冊需要控制的模組
@@ -42,7 +43,7 @@ window.frontEnd.eventSubscribe((eventModule, eventTitle, eventScene) => {
         uiState.miniMap.krpano.scene = eventScene
     }
 })
-
+cheatEvent()
 keydownSetting([],{
     'm':()=> uiState.miniMap.visible = !uiState.miniMap.visible,
     'l':()=> uiState.lang = uiState.lang==='zh'?'en':'zh',

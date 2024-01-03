@@ -1,13 +1,7 @@
 import {getParam, getParams} from "../utils/urlParam";
 
 const cheatObj={
-    skip:async ()=>{
-        await window.delay(100)
-        window.frontEnd.uiState.intro.visible =false
-    },
-    map:()=>{
-        window.frontEnd.uiState.miniMap.visible=true
-    },
+
 }
 
 const cheatParams=async ()=>{
