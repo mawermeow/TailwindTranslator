@@ -6704,35 +6704,35 @@ const tailwindObj = {
                 },
                 {
                     "class": ".bg-gradient-to-t",
-                    "properties": "background-image:background-image: background-image: linear-gradient(to top, var(--tw-gradient-stops));"
+                    "properties": "background-image: linear-gradient(to top, var(--tw-gradient-stops));"
                 },
                 {
                     "class": ".bg-gradient-to-tr",
-                    "properties": "background-image: background-image: linear-gradient(to top right, var(--tw-gradient-stops));"
+                    "properties": "background-image: linear-gradient(to top right, var(--tw-gradient-stops));"
                 },
                 {
                     "class": ".bg-gradient-to-r",
-                    "properties": "background-image: background-image: linear-gradient(to right, var(--tw-gradient-stops));"
+                    "properties": "background-image: linear-gradient(to right, var(--tw-gradient-stops));"
                 },
                 {
                     "class": ".bg-gradient-to-br",
-                    "properties": "background-image: background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));"
+                    "properties": "background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));"
                 },
                 {
                     "class": ".bg-gradient-to-b",
-                    "properties": "background-image: background-image: linear-gradient(to bottom, var(--tw-gradient-stops));"
+                    "properties": "background-image: linear-gradient(to bottom, var(--tw-gradient-stops));"
                 },
                 {
                     "class": ".bg-gradient-to-bl",
-                    "properties": "background-image: background-image: linear-gradient(to bottom left, var(--tw-gradient-stops));"
+                    "properties": "background-image: linear-gradient(to bottom left, var(--tw-gradient-stops));"
                 },
                 {
                     "class": ".bg-gradient-to-l",
-                    "properties": "background-image: background-image: linear-gradient(to left, var(--tw-gradient-stops));"
+                    "properties": "background-image: linear-gradient(to left, var(--tw-gradient-stops));"
                 },
                 {
                     "class": ".bg-gradient-to-tl",
-                    "properties": "background-image: background-image: linear-gradient(to top left, var(--tw-gradient-stops));"
+                    "properties": "background-image: linear-gradient(to top left, var(--tw-gradient-stops));"
                 }
             ]
         },

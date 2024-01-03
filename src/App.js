@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Input from "./components/UI/Input";
 import FadeDiv from "./components/UI/FadeDiv";
-import {breakpoints, formatCss, getCss, pseudoClasses} from "./utils/tailwindFormatter";
+import {breakpoints, formatCss, getStyleObject, pseudoClasses} from "./utils/tailwindFormatter";
 import { copyText } from "./utils/download";
 import Markdown from "./components/UI/Markdown";
 import {clickMenuProps} from "./components/UI/ContextMenuContainer";
@@ -60,6 +60,10 @@ const App = () => {
         copyText(allTextToCopy,()=>appendBubble('success','copy success!'));
     };
 
+    const handleCopyJSObj=()=>{
+        copyText(getStyleObject(output.normal),()=>appendBubble('success','copy success!'));
+    }
+
     // 使用 useEffect 監聽 className 和 tailwindClasses 的變化
     useEffect(() => {
         const formattedCss = formatCss(tailwindClasses);
@@ -68,7 +72,6 @@ const App = () => {
             cssWithClassName[key] = `.${className}${key !== 'normal' ? ':' + key : ''} {\n${val}\n}`;
         });
         setOutput(formattedCss)
-
     }, [className, tailwindClasses]); // 依賴項
 
     return (
@@ -87,11 +90,11 @@ const App = () => {
                 </div>
                 <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={className}
                        onChange={(value) => setClassName(value)}/>
-                <div onClick={handleCopyAll} className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 pointer-events-auto cursor-pointer px-2 border-l border-cyan-600 text-white hover:text-cyan-600 hover:to-white hover:via-white hover:from-white active:text-white active:bg-cyan-600 flex items-center justify-center">
-                    <div className="svg-w-full w-4">
-                        <FaRegCopy />
-                    </div>
-                </div>
+                {/*<div onClick={handleCopyAll} className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 pointer-events-auto cursor-pointer px-2 border-l border-cyan-600 text-white hover:text-cyan-600 hover:to-white hover:via-white hover:from-white active:text-white active:to-cyan-600 active:via-cyan-600 active:from-[#076A82] flex items-center justify-center">*/}
+                {/*    <div className="svg-w-full w-4">*/}
+                {/*        <FaRegCopy />*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
 
             {/* Tailwind CSS 規則輸入 */}
@@ -103,10 +106,15 @@ const App = () => {
                        onChange={(value) => handleCssGeneration(value)}/>
             </div>
 
+            <div className="w-full flex justify-end gap-1">
+                <TextBtn text="JS" onClick={handleCopyJSObj}/>
+                <TextBtn text="CSS" onClick={handleCopyAll}/>
+            </div>
+
             {/* 輸出並複製 */}
             <div className="w-full max-w-5xl flex-1 relative z-0">
                 <Scroller>
-                    {Object.entries(output).map(([key, value]) => {
+                    {Object.entries(output).map(([key, value], index) => {
                         if (!value) {
                             return <div key={key}></div>
                         }
@@ -174,8 +182,12 @@ const Tip = () => {
 
 3.⇢生成和複製 CSS 代碼:
 輸入後，轉換的 CSS 代碼將顯示在下方。您可以點擊任何一塊代碼來將其複製到剪貼板。
+JS按鈕可以將 normal 中的內容轉換為 JS 的 style 物件（style 不支援偽類），CSS按鈕可以直接複製所有 CSS，若有定義 ClassName 則能直接在 css 中使用。
 
-這個工具支持常規 CSS 以及特殊的偽類（例如：\`:active\` 、 \`:after\` 和 \`:last-child\`）。請隨意使用並將您的 Tailwind CSS 轉換為普通的 CSS！`}
+這個工具支持常規 CSS 以及特殊的偽類（例如：\`:active\` 、 \`:after\` 和 \`:last-child\`）。請隨意使用並將您的 Tailwind CSS 轉換為普通的 CSS！
+
+需注意，目前的 from, via, to 等類還有點問題，這方面的設定還請回 css 再處理！
+`}
                     </Markdown>
 
                     <div className="w-full flex justify-end">
@@ -187,4 +199,12 @@ const Tip = () => {
 
         </div>
     </FadeDiv>
+}
+
+const TextBtn=({text,onClick})=> {
+    return <div
+        onClick={onClick}
+        className="pointer-events-auto cursor-pointer rounded bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border border-cyan-600 text-center px-2 hover:text-cyan-600 hover:to-white hover:via-white hover:from-white active:text-white active:to-cyan-600 active:via-cyan-600 active:from-[#076A82]">
+        {text}
+    </div>
 }

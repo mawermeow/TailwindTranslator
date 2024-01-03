@@ -4,6 +4,7 @@
 
 ### 資料來源
 在[這個網頁](https://flowbite.com/tools/tailwind-cheat-sheet/)中抓取基本的 Tailwind 資料：
+然後他的 bg-gradient-to 有點問題，需手動調整。
 ```javascript
 let data = {};
 document.querySelectorAll(".rounded-xl").forEach(cardEl => {

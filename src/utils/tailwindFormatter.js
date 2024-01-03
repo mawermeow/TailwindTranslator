@@ -32,6 +32,28 @@ export const breakpoints = {
     '2xl': '@media (min-width: 1536px)',
 };
 
+const classToCss = {
+    h: 'height',
+    w: 'width',
+    p: 'padding',
+    m: 'margin',
+    mt: 'margin-top',
+    mr: 'margin-right',
+    mb: 'margin-bottom',
+    ml: 'margin-left',
+    pt: 'padding-top',
+    pr: 'padding-right',
+    pb: 'padding-bottom',
+    pl: 'padding-left',
+    px: ['padding-left', 'padding-right'],
+    py: ['padding-top', 'padding-bottom'],
+    mx: ['margin-left', 'margin-right'],
+    my: ['margin-top', 'margin-bottom'],
+    aspect: ['aspect-ratio'],
+    "grid-cols": (value) => `grid-template-columns: repeat(${value}, minmax(0, 1fr));`,
+    "grid-rows": (value) => `grid-template-rows: repeat(${value}, minmax(0, 1fr));`,
+};
+
 // 輔助函數：統一處理換行符的添加
 function appendWithNewLine(existingText, newText) {
     return existingText + (existingText.length > 0 ? '\n' : '') + newText;
@@ -126,25 +148,35 @@ function getDynamicCss(classText) {
     return cssText;
 }
 
+// 轉換為 JS 物件
+// 轉換 CSS 屬性名為駝峰命名
+function toCamelCase(str) {
+    return str.replace(/([-_][a-z])/g, (group) => group.toUpperCase().replace('-', ''));
+}
 
-const classToCss = {
-    h: 'height',
-    w: 'width',
-    p: 'padding',
-    m: 'margin',
-    mt: 'margin-top',
-    mr: 'margin-right',
-    mb: 'margin-bottom',
-    ml: 'margin-left',
-    pt: 'padding-top',
-    pr: 'padding-right',
-    pb: 'padding-bottom',
-    pl: 'padding-left',
-    px: ['padding-left', 'padding-right'],
-    py: ['padding-top', 'padding-bottom'],
-    mx: ['margin-left', 'margin-right'],
-    my: ['margin-top', 'margin-bottom'],
-    aspect: ['aspect-ratio'],
-    "grid-cols": (value) => `grid-template-columns: repeat(${value}, minmax(0, 1fr));`,
-    "grid-rows": (value) => `grid-template-rows: repeat(${value}, minmax(0, 1fr));`,
-};
+// 轉換 CSS 文本為 React style 物件
+function cssTextToStyleObject(cssText) {
+    const styleObject = {};
+    cssText.split(';').forEach(item => {
+        let [key, value] = item.split(':').map(part => part.trim());
+        if (key && value) {
+            key = toCamelCase(key); // 確保使用駝峰命名
+            styleObject[key] = isNaN(value) ? value : parseInt(value);
+        }
+    });
+    return styleObject;
+}
+
+function styleObjectToString(styleObject) {
+    return '{' + Object.entries(styleObject).map(([key, value]) => {
+        // 對於字符串值，需要加引號
+        const formattedValue = typeof value === 'string' ? `'${value}'` : value;
+        return `${key}: ${formattedValue}`;
+    }).join(', ') + '}';
+}
+
+// 修改 getCss 函數以返回 style 物件
+export const getStyleObject = (classText) => {
+    const jsStyleObj = cssTextToStyleObject(classText);
+    return styleObjectToString(jsStyleObj)
+}
