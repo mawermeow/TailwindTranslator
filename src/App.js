@@ -104,7 +104,7 @@ const App = () => {
             </div>
 
             {/* 輸出並複製 */}
-            <div className="w-full max-w-5xl flex-1 relative">
+            <div className="w-full max-w-5xl flex-1 relative z-0">
                 <Scroller>
                     {Object.entries(output).map(([key, value]) => {
                         if (!value) {
