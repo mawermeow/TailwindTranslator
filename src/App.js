@@ -89,10 +89,10 @@ const App = () => {
                 snowflakeCount={200}
             />
 
-            <div className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-10 mx-10">
+            <div className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-4 sm:p-10 mx-4 sm:mx-10">
                 <div className="w-full flex flex-col gap-4 items-center justify-center">
                     <Img className="w-48 md:w-80 -mb-[18px]" src="./media/images/banner.png"/>
-                    <div className="text-2xl md:text-4xl font-bold">Tailwind Translator</div>
+                    <div className="text-xl md:text-4xl font-bold text-center">Tailwind Translator</div>
                 </div>
 
                 {/* 自定義類別名稱輸入 */}
