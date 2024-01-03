@@ -106,7 +106,7 @@ const App = () => {
                        onChange={(value) => handleCssGeneration(value)}/>
             </div>
 
-            <div className="w-full flex justify-end gap-1">
+            <div className="w-full max-w-5xl flex justify-end gap-1">
                 <TextBtn text="JS" onClick={handleCopyJSObj}/>
                 <TextBtn text="CSS" onClick={handleCopyAll}/>
             </div>
