@@ -13,7 +13,9 @@ import BubbleModal, {appendBubble} from "./components/UI/BubbleModal";
 import Scroller from "./components/UI/Scroller";
 import Img from "./components/UI/Img";
 import {IoIosCloseCircleOutline} from "react-icons/io";
-import BackgroundImage from "./components/UI/ParallaxBackgroundImage";
+import ParallaxBackgroundImage from "./components/UI/ParallaxBackgroundImage";
+import {isMobile} from "react-device-detect";
+import Snowfall from 'react-snowfall';
 
 const App = () => {
     const [output, setOutput] = useState({});
@@ -75,13 +77,17 @@ const App = () => {
         setOutput(formattedCss)
     }, [className, tailwindClasses]); // 依賴項
 
+    const canTouch = ('ontouchstart' in window)
+
     return (
         <FadeDiv visible={true} className={`fixed inset-0 flex justify-center`}>
             <div className="absolute inset-0 z-0">
-                {/*<Img className="w-full h-full object-cover " src="./media/images/bg.png"/>*/}
-                <BackgroundImage src="./media/images/bg.png"/>
+                {!(!isMobile&&!canTouch)&&<Img className="w-full h-full object-cover " src="./media/images/bg.png"/>}
+                {!isMobile&&!canTouch&&<ParallaxBackgroundImage src="./media/images/bg.png"/>}
             </div>
-
+            <Snowfall
+                snowflakeCount={200}
+            />
 
             <div className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-10 mx-10">
                 <div className="w-full flex flex-col gap-4 items-center justify-center">

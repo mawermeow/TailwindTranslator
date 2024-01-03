@@ -13,7 +13,7 @@ const ParallaxBackgroundImage = ({
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
-    const { currentHeight, currentWidth } = useSnapshot(windowSizeState);
+    const { currentHeight, currentWidth,isWidthBased } = useSnapshot(windowSizeState);
 
     const aspectRatioWindow = currentWidth / currentHeight;
     const aspectRatioImg = imgWidth / imgHeight;
@@ -21,6 +21,9 @@ const ParallaxBackgroundImage = ({
     const scale = aspectRatioWindow > aspectRatioImg
         ? currentWidth / imgWidth
         : currentHeight / imgHeight;
+
+// 確保圖片至少與視窗同寬或同高
+    const adjustedScale = Math.max(scale, 1);
 
     // 計算 output range，考慮視差強度和縮放比例
     const maxOffsetX = (currentWidth * scale - currentWidth) / 2 * parallaxIntensity;
@@ -52,7 +55,7 @@ const ParallaxBackgroundImage = ({
                     x: moveX,
                     y: moveY,
                     translateZ: 0,
-                    scale: 1 / scale
+                    scale: adjustedScale*1.2
                 }}
             />
         </div>
