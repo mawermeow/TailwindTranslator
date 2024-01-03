@@ -46,7 +46,7 @@ const App = () => {
 
     const handleCopy = (value, key) => {
         const textToCopy = getCssText(value, key)
-        copyText(textToCopy,()=>appendBubble('success','copy success!'));
+        copyText(textToCopy,()=>appendBubble('success','Copy CSS!'));
     };
 
     const handleCopyAll = () => {
@@ -57,11 +57,11 @@ const App = () => {
                 allTextToCopy += getCssText(value, key) + '\n';
             }
         });
-        copyText(allTextToCopy,()=>appendBubble('success','copy success!'));
+        copyText(allTextToCopy,()=>appendBubble('success','Copy CSS!'));
     };
 
     const handleCopyJSObj=()=>{
-        copyText(getStyleObject(output.normal),()=>appendBubble('success','copy success!'));
+        copyText(getStyleObject(output.normal),()=>appendBubble('success','Copy normal JS obj!'));
     }
 
     // 使用 useEffect 監聽 className 和 tailwindClasses 的變化
