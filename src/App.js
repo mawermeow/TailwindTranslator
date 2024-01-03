@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
 import Input from "./components/UI/Input";
 import FadeDiv from "./components/UI/FadeDiv";
-import { formatCss, getCss } from "./stores/tailwindObj";
+import {breakpoints, formatCss, getCss, pseudoClasses} from "./utils/tailwindFormatter";
 import { copyText } from "./utils/download";
 import Markdown from "./components/UI/Markdown";
-import ContextMenuContainer, {clickMenuProps, hoverMenuProps} from "./components/UI/ContextMenuContainer";
+import {clickMenuProps} from "./components/UI/ContextMenuContainer";
 import {useSnapshot} from "valtio";
 import {uiState} from "./stores/model";
 import {FaRegCircleQuestion} from "react-icons/fa6";
@@ -17,27 +17,32 @@ const App = () => {
     const [tailwindClasses, setTailwindClasses] = useState("");
     const [output, setOutput] = useState({});
     const [className, setClassName] = useState("");
-    const [outputWithClassName, setOutputWithClassName]=useState({})
+
 
     const handleCssGeneration = (value) => {
         setTailwindClasses(value);
     };
 
-    const getCssText=(value, key)=>{
-        const exception = {
-            first:'first-child',last:'last-child'
-        }
+    const getCssText = (value, key) => {
+
         let textToCopy = value;
         if (className) {
-            // 如果 className 為空，只複製轉化後的內容
-            textToCopy = key === 'normal'
-                ? `.${className}{\n${value}\n}`
-                :Object.keys(exception).includes(key)
-                    ? `.${className}:${exception[key]} {\n${value}\n}`
+            if (breakpoints[key]) {
+                // 對於響應式斷點，將 CSS 規則嵌套在媒體查詢中
+                textToCopy = `${breakpoints[key]} {\n  .${className} {\n${value}\n  }\n}`;
+            } else if (pseudoClasses[key]) {
+                // 對於特殊偽類
+                textToCopy = `.${className}:${pseudoClasses[key]} {\n${value}\n}`;
+            } else {
+                // 對於普通類別或其他情況
+                textToCopy = key === 'normal'
+                    ? `.${className} {\n${value}\n}`
                     : `.${className}:${key} {\n${value}\n}`;
+            }
         }
-        return textToCopy
+        return textToCopy;
     }
+
 
     const handleCopy = (value, key) => {
         const textToCopy = getCssText(value, key)
@@ -63,7 +68,7 @@ const App = () => {
             cssWithClassName[key] = `.${className}${key !== 'normal' ? ':' + key : ''} {\n${val}\n}`;
         });
         setOutput(formattedCss)
-        setOutputWithClassName(cssWithClassName)
+
     }, [className, tailwindClasses]); // 依賴項
 
     return (
@@ -77,12 +82,12 @@ const App = () => {
 
             {/* 自定義類別名稱輸入 */}
             <div className="flex gap-1 border border-cyan-600 rounded w-full max-w-5xl overflow-hidden">
-                <div className="bg-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
+                <div className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
                     ClassName
                 </div>
                 <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={className}
                        onChange={(value) => setClassName(value)}/>
-                <div onClick={handleCopyAll} className="img-btn px-2 border-l border-cyan-600 bg-cyan-600 text-white hover:text-cyan-600 hover:bg-white active:text-white active:bg-cyan-600 flex items-center justify-center">
+                <div onClick={handleCopyAll} className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 pointer-events-auto cursor-pointer px-2 border-l border-cyan-600 text-white hover:text-cyan-600 hover:to-white hover:via-white hover:from-white active:text-white active:bg-cyan-600 flex items-center justify-center">
                     <div className="svg-w-full w-4">
                         <FaRegCopy />
                     </div>
@@ -91,7 +96,7 @@ const App = () => {
 
             {/* Tailwind CSS 規則輸入 */}
             <div className="flex gap-1 border border-cyan-600 rounded w-full max-w-5xl">
-                <div className="bg-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
+                <div className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
                     Tailwind
                 </div>
                 <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={""}
@@ -112,7 +117,7 @@ const App = () => {
                             >
                                 <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none"><FaRegCopy /></div>
                                 <div>
-                                    <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{key}</div>
+                                    <div className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{`${key}${{...pseudoClasses,...breakpoints}[key]?` - ${{...pseudoClasses,...breakpoints}[key]}`:""}`}</div>
                                     <div className="whitespace-pre-wrap">{value}</div>
                                 </div>
                             </div>
@@ -120,9 +125,9 @@ const App = () => {
                     })}
                 </Scroller>
             </div>
-            <Tip/>
+
             <div
-                className="w-8 aspect-square svg-w-full fixed bottom-4 right-4 img-btn"
+                className="w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600"
                 {...clickMenuProps(
                     // 'tip',
                     () => uiState.tip.visible = !uiState.tip.visible,
@@ -131,6 +136,7 @@ const App = () => {
             >
                 <FaRegCircleQuestion/>
             </div>
+            <Tip/>
             <BubbleModal/>
         </FadeDiv>
     );
@@ -141,17 +147,19 @@ export default App;
 
 const Tip = () => {
     const {visible} = useSnapshot(uiState.tip)
-    return <ContextMenuContainer
-        className="fixed z-50 pointer-events-none"
-        positionY='top'
-        positionX='left'
-        positionOffset={10}
-        edgeDistance={16}
+
+    return <FadeDiv visible={visible}
+        className="fixed z-50 pointer-events-none inset-0 flex items-center justify-center"
     >
-        <FadeDiv visible={visible} className={`fixed inset-0 bg-black/30 bg-blur ${visible?'pointer-events-auto':''}`} onClick={()=>uiState.tip.visible=false}></FadeDiv>
-        <FadeDiv visible={visible} wouldRemove={false} className={`w-full max-w-xl m-6 md:m-auto bg-white bg-blur rounded border border-cyan-600 px-6 py-4 ${visible?'pointer-events-auto':''}`}>
-        <Markdown>
-            {`
+        <div className={`fixed z-30 inset-0 bg-black/30 bg-blur ${visible?'pointer-events-auto':''}`} onClick={()=>uiState.tip.visible=false}></div>
+        <div className={`relative z-40 w-full max-w-xl h-5/6 m-6 md:m-auto bg-white bg-blur rounded border border-cyan-600 px-6 py-4 ${visible?'pointer-events-auto':''}`}>
+
+            <Scroller
+                thumbClassName = '-right-5 w-1 bg-cyan-600/50 rounded-full'
+            >
+                <div className="absolute">
+                    <Markdown>
+                        {`
 歡迎使用 Tailwind Translator！
 此工具專為需要切換 Tailwind 與 vanilla css 寫法的懶人所設計。
 
@@ -168,11 +176,15 @@ const Tip = () => {
 輸入後，轉換的 CSS 代碼將顯示在下方。您可以點擊任何一塊代碼來將其複製到剪貼板。
 
 這個工具支持常規 CSS 以及特殊的偽類（例如：\`:first-child\` 和 \`:last-child\`）。請隨意使用並將您的 Tailwind CSS 轉換為普通的 CSS！`}
-        </Markdown>
-            <div className="w-full flex justify-end">
-                <Img className="w-48" src="./media/images/sticker.png"/>
-            </div>
+                    </Markdown>
 
-        </FadeDiv>
-    </ContextMenuContainer>
+                    <div className="w-full flex justify-end">
+                        <Img className="w-48" src="./media/images/sticker.png"/>
+                    </div>
+                </div>
+
+            </Scroller>
+
+        </div>
+    </FadeDiv>
 }
