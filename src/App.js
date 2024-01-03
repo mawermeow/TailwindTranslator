@@ -13,6 +13,7 @@ import BubbleModal, {appendBubble} from "./components/UI/BubbleModal";
 import Scroller from "./components/UI/Scroller";
 import Img from "./components/UI/Img";
 import {IoIosCloseCircleOutline} from "react-icons/io";
+import BackgroundImage from "./components/UI/ParallaxBackgroundImage";
 
 const App = () => {
     const [output, setOutput] = useState({});
@@ -77,8 +78,10 @@ const App = () => {
     return (
         <FadeDiv visible={true} className={`fixed inset-0 flex justify-center`}>
             <div className="absolute inset-0 z-0">
-                <Img className="w-full h-full object-cover " src="./media/images/bg.png"/>
+                {/*<Img className="w-full h-full object-cover " src="./media/images/bg.png"/>*/}
+                <BackgroundImage src="./media/images/bg.png"/>
             </div>
+
 
             <div className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-10 mx-10">
                 <div className="w-full flex flex-col gap-4 items-center justify-center">
@@ -144,7 +147,7 @@ const App = () => {
             </div>
 
             <div
-                className="shadow-white transition-colors w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
+                className="shadow-white bg-white/30 transition-colors w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
                 {...clickMenuProps(
                     // 'tip',
                     () => uiState.tip.visible = !uiState.tip.visible,
