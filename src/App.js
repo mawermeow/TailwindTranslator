@@ -144,14 +144,14 @@ const App = () => {
             </div>
 
             <div
-                className="transition-colors w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600"
+                className="shadow-white transition-colors w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
                 {...clickMenuProps(
                     // 'tip',
                     () => uiState.tip.visible = !uiState.tip.visible,
                     // () => uiState.tip.visible = false,
                 )}
             >
-                <FaRegCircleQuestion/>
+                <FaRegCircleQuestion />
             </div>
             <Tip/>
             <BubbleModal/>
