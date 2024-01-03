@@ -144,6 +144,7 @@ const classToCss = {
     py: ['padding-top', 'padding-bottom'],
     mx: ['margin-left', 'margin-right'],
     my: ['margin-top', 'margin-bottom'],
+    aspect: ['aspect-ratio'],
     "grid-cols": (value) => `grid-template-columns: repeat(${value}, minmax(0, 1fr));`,
     "grid-rows": (value) => `grid-template-rows: repeat(${value}, minmax(0, 1fr));`,
 };
