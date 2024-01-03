@@ -34,6 +34,7 @@ window.frontEnd.eventSubscribe((eventModule, eventTitle, eventScene) => {
                     uiState.tip.visible=false
                     uiState.className = "example .item"
                     uiState.tailwindClasses = "w-10 md:w-[43px] lg:w-12 lg:my-[43px] border border-black first:border-transparent aspect-[4/3] rounded-xl lg:aspect-square md:rounded-[12px]"
+                    uiState.showFrontEnd=true
                     break
             }
         }
