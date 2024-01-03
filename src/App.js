@@ -89,7 +89,7 @@ const App = () => {
                 snowflakeCount={200}
             />
 
-            <FadeDiv visible={showFrontEnd} className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-4 sm:p-10 mx-4 sm:mx-10">
+            <FadeDiv visible={showFrontEnd} wouldRemove={false} className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-4 sm:p-10 mx-4 sm:mx-10">
                 <div className="w-full flex flex-col gap-4 items-center justify-center">
                     <Img className="w-48 md:w-80 -mb-[18px]" src="./media/images/banner.png"/>
                     <div className="text-xl md:text-4xl font-bold text-center">Tailwind Translator</div>
@@ -148,10 +148,7 @@ const App = () => {
                         })}
                     </Scroller>
                 </div>
-
-
             </FadeDiv>
-
 
             <div className="fixed bottom-4 right-4 flex gap-4">
                 <div
@@ -167,8 +164,6 @@ const App = () => {
                     <FaRegCircleQuestion/>
                 </div>
             </div>
-
-
 
             <Tip/>
             <BubbleModal/>
