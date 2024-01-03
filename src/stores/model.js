@@ -10,7 +10,8 @@ export const uiState = proxy({
     mouse:{clientX:0, clientY:0},
     tip:{visible:false},
     bubble:{bubbleList:[]},
-
+    className:'',
+    tailwindClasses:'',
 })
 
 window.frontEnd.uiState = uiState

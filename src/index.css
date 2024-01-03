@@ -46,7 +46,7 @@ code {
   div#TailwindTranslator .markdown ol,ul{@apply py-4}
   div#TailwindTranslator .markdown ol{@apply list-decimal ml-7}
   div#TailwindTranslator .markdown ul{@apply list-disc ml-7}
-  div#TailwindTranslator .markdown a{@apply text-[#98E9FB]  opacity-90 hover:opacity-100 cursor-pointer}
+  div#TailwindTranslator .markdown a{@apply text-cyan-600 hover:text-cyan-400 cursor-pointer}
   div#TailwindTranslator .info .markdown del{text-decoration: none; @apply text-[#b3b3b3] font-normal}
   div#TailwindTranslator .info .markdown del.text-justify{text-align: start}
   div#TailwindTranslator .info .markdown h4{@apply text-xl block mt-2 mb-2 text-[#E2B863]}

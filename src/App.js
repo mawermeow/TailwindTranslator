@@ -12,15 +12,15 @@ import {FaRegCopy} from "react-icons/fa";
 import BubbleModal, {appendBubble} from "./components/UI/BubbleModal";
 import Scroller from "./components/UI/Scroller";
 import Img from "./components/UI/Img";
+import {IoIosCloseCircleOutline} from "react-icons/io";
 
 const App = () => {
-    const [tailwindClasses, setTailwindClasses] = useState("");
     const [output, setOutput] = useState({});
-    const [className, setClassName] = useState("");
+    const {className,tailwindClasses}=useSnapshot(uiState)
 
 
     const handleCssGeneration = (value) => {
-        setTailwindClasses(value);
+        uiState.tailwindClasses = value
     };
 
     const getCssText = (value, key) => {
@@ -89,12 +89,8 @@ const App = () => {
                     ClassName
                 </div>
                 <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={className}
-                       onChange={(value) => setClassName(value)}/>
-                {/*<div onClick={handleCopyAll} className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 pointer-events-auto cursor-pointer px-2 border-l border-cyan-600 text-white hover:text-cyan-600 hover:to-white hover:via-white hover:from-white active:text-white active:to-cyan-600 active:via-cyan-600 active:from-[#076A82] flex items-center justify-center">*/}
-                {/*    <div className="svg-w-full w-4">*/}
-                {/*        <FaRegCopy />*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                       onChange={(value) => uiState.className = value}/>
+                <FadeDiv visible={className} onClick={()=>uiState.className = ""} className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400"><IoIosCloseCircleOutline /></FadeDiv>
             </div>
 
             {/* Tailwind CSS 規則輸入 */}
@@ -102,8 +98,9 @@ const App = () => {
                 <div className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
                     Tailwind
                 </div>
-                <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={""}
+                <Input className="w-full rounded px-2 text-cyan-600 flex-1" value={tailwindClasses}
                        onChange={(value) => handleCssGeneration(value)}/>
+                <FadeDiv visible={tailwindClasses} onClick={()=>uiState.tailwindClasses = ""} className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400"><IoIosCloseCircleOutline /></FadeDiv>
             </div>
 
             <div className="w-full max-w-5xl flex justify-end gap-2">
@@ -135,7 +132,7 @@ const App = () => {
             </div>
 
             <div
-                className="w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600"
+                className="w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600"
                 {...clickMenuProps(
                     // 'tip',
                     () => uiState.tip.visible = !uiState.tip.visible,
@@ -187,6 +184,8 @@ JS按鈕可以將 normal 中的內容轉換為 JS 的 style 物件（style 不�
 這個工具支持常規 CSS 以及特殊的偽類（例如：\`:active\` 、 \`:after\` 和 \`:last-child\`）。請隨意使用並將您的 Tailwind CSS 轉換為普通的 CSS！
 
 需注意，目前不支援多重偽類，from via to 等類的轉譯也還有點問題，這方面的設定還請回 css 處理！
+
+[點我看範例](https://frontEndAction.example-one)
 `}
                     </Markdown>
 

@@ -56,6 +56,7 @@ const classToCss = {
     "min-h":'min-height',
     "max-w":'max-width',
     "min-w":'min-width',
+    rounded:'rounded',
     "grid-cols": (value) => `grid-template-columns: repeat(${value}, minmax(0, 1fr));`,
     "grid-rows": (value) => `grid-template-rows: repeat(${value}, minmax(0, 1fr));`,
 };
