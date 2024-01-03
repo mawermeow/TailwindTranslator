@@ -175,7 +175,7 @@ const Tip = () => {
 3.⇢生成和複製 CSS 代碼:
 輸入後，轉換的 CSS 代碼將顯示在下方。您可以點擊任何一塊代碼來將其複製到剪貼板。
 
-這個工具支持常規 CSS 以及特殊的偽類（例如：\`:first-child\` 和 \`:last-child\`）。請隨意使用並將您的 Tailwind CSS 轉換為普通的 CSS！`}
+這個工具支持常規 CSS 以及特殊的偽類（例如：\`:active\` 、 \`:after\` 和 \`:last-child\`）。請隨意使用並將您的 Tailwind CSS 轉換為普通的 CSS！`}
                     </Markdown>
 
                     <div className="w-full flex justify-end">
