@@ -16,11 +16,18 @@ import {IoIosCloseCircleOutline, IoMdEye, IoMdEyeOff} from "react-icons/io";
 import ParallaxBackgroundImage from "./components/UI/ParallaxBackgroundImage";
 import {isMobile} from "react-device-detect";
 import Snowfall from 'react-snowfall';
+import useImagesLoaded from "./hooks/useImagesLoaded";
+import {PiSpinnerLight} from "react-icons/pi";
 
+const canTouch = ('ontouchstart' in window)
+const imgObj = {
+    bg:"./media/images/bg.png",
+    banner:"./media/images/banner.png",
+    sticker:"./media/images/sticker.png",
+}
 const App = () => {
     const [output, setOutput] = useState({});
-    const {className,tailwindClasses,showFrontEnd}=useSnapshot(uiState)
-
+    const {className,tailwindClasses,showFrontEnd,showMainPage}=useSnapshot(uiState)
 
     const handleCssGeneration = (value) => {
         uiState.tailwindClasses = value
@@ -77,97 +84,110 @@ const App = () => {
         setOutput(formattedCss)
     }, [className, tailwindClasses]); // 依賴項
 
-    const canTouch = ('ontouchstart' in window)
+
+    const allLoaded = useImagesLoaded(imgObj);
+    useEffect(()=>{
+        if (allLoaded) {
+            uiState.showFrontEnd=true
+        }
+    }, [allLoaded])
 
     return (
-        <FadeDiv visible={true} className={`fixed inset-0 flex justify-center`}>
-            <div className="absolute inset-0 z-0">
-                {!(!isMobile&&!canTouch)&&<Img className="w-full h-full object-cover " src="./media/images/bg.png"/>}
-                {!isMobile&&!canTouch&&<ParallaxBackgroundImage src="./media/images/bg.png"/>}
-            </div>
-            <Snowfall
-                snowflakeCount={200}
-            />
-
-            <FadeDiv visible={showFrontEnd} wouldRemove={false} className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-4 sm:p-10 mx-4 sm:mx-10">
-                <div className="w-full flex flex-col gap-4 items-center justify-center">
-                    <Img className="w-48 md:w-80 -mb-[18px]" src="./media/images/banner.png"/>
-                    <div className="text-xl md:text-4xl font-bold text-center">Tailwind Translator</div>
-                </div>
-
-                {/* 自定義類別名稱輸入 */}
-                <div className="flex gap-1 border border-cyan-600 rounded w-full overflow-hidden">
-                    <div
-                        className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
-                        ClassName
-                    </div>
-                    <Input className="w-full rounded px-2 text-cyan-600 flex-1 bg-transparent" value={className}
-                           onChange={(value) => uiState.className = value}/>
-                    <FadeDiv visible={className} onClick={() => uiState.className = ""}
-                             className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400 transition-colors"><IoIosCloseCircleOutline/></FadeDiv>
-                </div>
-
-                {/* Tailwind CSS 規則輸入 */}
-                <div className="flex gap-1 border border-cyan-600 rounded w-full">
-                    <div
-                        className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
-                        Tailwind
-                    </div>
-                    <Input className="w-full rounded px-2 text-cyan-600 flex-1 bg-transparent" value={tailwindClasses}
-                           onChange={(value) => handleCssGeneration(value)}/>
-                    <FadeDiv visible={tailwindClasses} onClick={() => uiState.tailwindClasses = ""}
-                             className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400"><IoIosCloseCircleOutline/></FadeDiv>
-                </div>
-
-                <div className="w-full flex justify-end gap-2">
-                    <TextBtn text="JS" onClick={handleCopyJSObj}/>
-                    <TextBtn text="CSS" onClick={handleCopyAll}/>
-                </div>
-
-                {/* 輸出並複製 */}
-                <div className="w-full flex-1 relative z-0">
-                    <Scroller>
-                        {Object.entries(output).map(([key, value], index) => {
-                            if (!value) {
-                                return <div key={key}></div>
-                            }
-                            return (
-                                <div key={key}
-                                     className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4 hover:text-cyan-500 active:text-black transition-all"
-                                     onClick={() => handleCopy(value, key)}
-                                >
-                                    <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none">
-                                        <FaRegCopy/></div>
-                                    <div>
-                                        <div
-                                            className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{`${key}${{...pseudoClasses, ...breakpoints}[key] ? ` - ${{...pseudoClasses, ...breakpoints}[key]}` : ""}`}</div>
-                                        <div className="whitespace-pre-wrap">{value}</div>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </Scroller>
+        <div >
+            <FadeDiv showAtFirst={true} visible={!showFrontEnd} className="fixed inset-0 flex items-center justify-center ">
+                <div className="w-10 text-cyan-600 svg-w-full rotating">
+                    <PiSpinnerLight />
                 </div>
             </FadeDiv>
-
-            <div className="fixed bottom-4 right-4 flex gap-4">
-                <div
-                    className="shadow-white bg-white/30 transition-colors w-6 aspect-square svg-w-full  cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
-                    onClick={()=>uiState.showFrontEnd=!showFrontEnd}
-                >
-                    {!showFrontEnd?<IoMdEye/>:<IoMdEyeOff />}
+            <FadeDiv visible={showFrontEnd}  transition={{duration:1}} className={`fixed inset-0 flex justify-center`}>
+                <div className="absolute inset-0 z-0">
+                    {!(!isMobile&&!canTouch)&&<Img className="w-full h-full object-cover " src={imgObj.bg}/>}
+                    {!isMobile&&!canTouch&&<ParallaxBackgroundImage src="./media/images/bg.png"/>}
                 </div>
-                <div
-                    className="shadow-white bg-white/30 transition-colors w-6 aspect-square svg-w-full  cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
-                    onClick={()=>uiState.tip.visible = !uiState.tip.visible}
-                >
-                    <FaRegCircleQuestion/>
-                </div>
-            </div>
+                <Snowfall
+                    snowflakeCount={200}
+                />
 
-            <Tip/>
-            <BubbleModal/>
-        </FadeDiv>
+                <FadeDiv visible={showMainPage} wouldRemove={false} className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-4 sm:p-10 mx-4 sm:mx-10">
+                    <div className="w-full flex flex-col gap-4 items-center justify-center">
+                        <Img className="w-48 md:w-80 -mb-[18px]" src={imgObj.banner}/>
+                        <div className="text-xl md:text-4xl font-bold text-center">Tailwind Translator</div>
+                    </div>
+
+                    {/* 自定義類別名稱輸入 */}
+                    <div className="flex gap-1 border border-cyan-600 rounded w-full overflow-hidden">
+                        <div
+                            className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
+                            ClassName
+                        </div>
+                        <Input className="w-full rounded px-2 text-cyan-600 flex-1 bg-transparent" value={className}
+                               onChange={(value) => uiState.className = value}/>
+                        <FadeDiv visible={className} onClick={() => uiState.className = ""}
+                                 className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400 transition-colors"><IoIosCloseCircleOutline/></FadeDiv>
+                    </div>
+
+                    {/* Tailwind CSS 規則輸入 */}
+                    <div className="flex gap-1 border border-cyan-600 rounded w-full">
+                        <div
+                            className="bg-gradient-to-t via-cyan-600 from-[#076A82] to-cyan-600 text-white font-bold text-lg border-r border-cyan-600 text-center w-28">
+                            Tailwind
+                        </div>
+                        <Input className="w-full rounded px-2 text-cyan-600 flex-1 bg-transparent" value={tailwindClasses}
+                               onChange={(value) => handleCssGeneration(value)}/>
+                        <FadeDiv visible={tailwindClasses} onClick={() => uiState.tailwindClasses = ""}
+                                 className="w-6 svg-w-full pointer-events-auto cursor-pointer right-2 opacity-70 text-gray-400 hover:text-gray-600 active:text-gray-400"><IoIosCloseCircleOutline/></FadeDiv>
+                    </div>
+
+                    <div className="w-full flex justify-end gap-2">
+                        <TextBtn text="JS" onClick={handleCopyJSObj}/>
+                        <TextBtn text="CSS" onClick={handleCopyAll}/>
+                    </div>
+
+                    {/* 輸出並複製 */}
+                    <div className="w-full flex-1 relative z-0">
+                        <Scroller>
+                            {Object.entries(output).map(([key, value], index) => {
+                                if (!value) {
+                                    return <div key={key}></div>
+                                }
+                                return (
+                                    <div key={key}
+                                         className="relative img-btn flex flex-col border rounded border-cyan-600 p-4 mb-4 hover:text-cyan-500 active:text-black transition-all"
+                                         onClick={() => handleCopy(value, key)}
+                                    >
+                                        <div className="absolute right-2 top-2 w-4 svg-w-full pointer-events-none">
+                                            <FaRegCopy/></div>
+                                        <div>
+                                            <div
+                                                className="font-bold text-xl border-b pb-2 mb-2 text-cyan-600">{`${key}${{...pseudoClasses, ...breakpoints}[key] ? ` - ${{...pseudoClasses, ...breakpoints}[key]}` : ""}`}</div>
+                                            <div className="whitespace-pre-wrap">{value}</div>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </Scroller>
+                    </div>
+                </FadeDiv>
+
+                <div className="fixed bottom-4 right-4 flex gap-4">
+                    <div
+                        className="shadow-white bg-white/30 transition-colors w-6 aspect-square svg-w-full  cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
+                        onClick={()=>uiState.showMainPage=!showMainPage}
+                    >
+                        {!showFrontEnd?<IoMdEye/>:<IoMdEyeOff />}
+                    </div>
+                    <div
+                        className="shadow-white bg-white/30 transition-colors w-6 aspect-square svg-w-full  cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
+                        onClick={()=>uiState.tip.visible = !uiState.tip.visible}
+                    >
+                        <FaRegCircleQuestion/>
+                    </div>
+                </div>
+
+                <Tip/>
+                <BubbleModal/>
+            </FadeDiv>
+        </div>
     );
 }
 
@@ -216,7 +236,7 @@ JS按鈕可以將 normal 中的內容轉換為 JS 的 style 物件（style 不�
                     </Markdown>
 
                     <div className="w-full flex justify-end">
-                        <Img className="w-48" src="./media/images/sticker.png"/>
+                        <Img className="w-48" src={imgObj.sticker}/>
                     </div>
                 </div>
 

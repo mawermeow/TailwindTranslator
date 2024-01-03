@@ -2,7 +2,8 @@ import {proxy,subscribe} from "valtio";
 import "./controller"
 
 export const uiState = proxy({
-    showFrontEnd:true, // 是否顯示所有介面；VR模式會改為不顯示介面。
+    showFrontEnd:false, // 是否顯示所有介面；VR模式會改為不顯示介面。
+    showMainPage:true,
     lang: 'zh', // 語言
     get isZh(){return this.lang==='zh'},
     teamEventText:'', // 接收團導對專案執行的 onEvent 事件
