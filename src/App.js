@@ -186,7 +186,7 @@ JS按鈕可以將 normal 中的內容轉換為 JS 的 style 物件（style 不�
 
 這個工具支持常規 CSS 以及特殊的偽類（例如：\`:active\` 、 \`:after\` 和 \`:last-child\`）。請隨意使用並將您的 Tailwind CSS 轉換為普通的 CSS！
 
-需注意，目前的 from, via, to 等類還有點問題，這方面的設定還請回 css 再處理！
+需注意，目前不支援多重偽類，from via to 等類的轉譯也還有點問題，這方面的設定還請回 css 處理！
 `}
                     </Markdown>
 
