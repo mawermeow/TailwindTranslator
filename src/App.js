@@ -12,14 +12,14 @@ import {FaRegCopy} from "react-icons/fa";
 import BubbleModal, {appendBubble} from "./components/UI/BubbleModal";
 import Scroller from "./components/UI/Scroller";
 import Img from "./components/UI/Img";
-import {IoIosCloseCircleOutline} from "react-icons/io";
+import {IoIosCloseCircleOutline, IoMdEye, IoMdEyeOff} from "react-icons/io";
 import ParallaxBackgroundImage from "./components/UI/ParallaxBackgroundImage";
 import {isMobile} from "react-device-detect";
 import Snowfall from 'react-snowfall';
 
 const App = () => {
     const [output, setOutput] = useState({});
-    const {className,tailwindClasses}=useSnapshot(uiState)
+    const {className,tailwindClasses,showFrontEnd}=useSnapshot(uiState)
 
 
     const handleCssGeneration = (value) => {
@@ -89,7 +89,7 @@ const App = () => {
                 snowflakeCount={200}
             />
 
-            <div className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-4 sm:p-10 mx-4 sm:mx-10">
+            <FadeDiv visible={showFrontEnd} className="relative flex flex-col items-center gap-4 pointer-events-auto h-full w-full max-w-5xl bg-white/90 p-4 sm:p-10 mx-4 sm:mx-10">
                 <div className="w-full flex flex-col gap-4 items-center justify-center">
                     <Img className="w-48 md:w-80 -mb-[18px]" src="./media/images/banner.png"/>
                     <div className="text-xl md:text-4xl font-bold text-center">Tailwind Translator</div>
@@ -150,18 +150,26 @@ const App = () => {
                 </div>
 
 
+            </FadeDiv>
+
+
+            <div className="fixed bottom-4 right-4 flex gap-4">
+                <div
+                    className="shadow-white bg-white/30 transition-colors w-6 aspect-square svg-w-full  cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
+                    onClick={()=>uiState.showFrontEnd=!showFrontEnd}
+                >
+                    {!showFrontEnd?<IoMdEye/>:<IoMdEyeOff />}
+                </div>
+                <div
+                    className="shadow-white bg-white/30 transition-colors w-6 aspect-square svg-w-full  cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
+                    onClick={()=>uiState.tip.visible = !uiState.tip.visible}
+                >
+                    <FaRegCircleQuestion/>
+                </div>
             </div>
 
-            <div
-                className="shadow-white bg-white/30 transition-colors w-8 aspect-square svg-w-full fixed bottom-4 right-4 cursor-pointer pointer-events-auto text-cyan-600 hover:text-cyan-400 active:text-cyan-600 rounded-full"
-                {...clickMenuProps(
-                    // 'tip',
-                    () => uiState.tip.visible = !uiState.tip.visible,
-                    // () => uiState.tip.visible = false,
-                )}
-            >
-                <FaRegCircleQuestion />
-            </div>
+
+
             <Tip/>
             <BubbleModal/>
         </FadeDiv>
