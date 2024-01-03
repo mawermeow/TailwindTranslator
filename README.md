@@ -1,6 +1,7 @@
 # TailwindTranslator
 
-[Demo](https://tailwind-translator.mawer.cc/)
+[乾淨的Demo](https://tailwind-translator.mawer.cc/)
+[含範例的Demo](https://tailwind-translator.mawer.cc/?cheat=example-one)
 
 ### 資料來源
 在[這個網頁](https://flowbite.com/tools/tailwind-cheat-sheet/)中抓取基本的 Tailwind 資料：
