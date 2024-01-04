@@ -13,7 +13,7 @@ import BubbleModal, {appendBubble} from "./components/UI/BubbleModal";
 import Scroller from "./components/UI/Scroller";
 import Img from "./components/UI/Img";
 import {IoIosCloseCircleOutline, IoMdEye, IoMdEyeOff} from "react-icons/io";
-import ParallaxBackgroundImage from "./components/UI/ParallaxBackgroundImage";
+import ParallaxImage from "./components/UI/ParallaxImage";
 import {isMobile} from "react-device-detect";
 import Snowfall from 'react-snowfall';
 import useImagesLoaded from "./hooks/useImagesLoaded";
@@ -102,7 +102,7 @@ const App = () => {
             <FadeDiv visible={showFrontEnd}  transition={{duration:1}} className={`fixed inset-0 flex justify-center`}>
                 <div className="absolute inset-0 z-0">
                     {!(!isMobile&&!canTouch)&&<Img className="w-full h-full object-cover " src={imgObj.bg}/>}
-                    {!isMobile&&!canTouch&&<ParallaxBackgroundImage src="./media/images/bg.png"/>}
+                    {!isMobile&&!canTouch&&<ParallaxImage src="./media/images/bg.png"/>}
                 </div>
                 <Snowfall
                     snowflakeCount={200}

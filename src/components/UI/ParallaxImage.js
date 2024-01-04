@@ -3,12 +3,12 @@ import { motion, useMotionValue, useTransform } from 'framer-motion';
 import {useSnapshot} from "valtio";
 import {windowSizeState} from "../../stores/windowSizeState";
 
-const ParallaxBackgroundImage = ({
+const ParallaxImage = ({
                                      src,
                                      className = "w-full h-full",
-                                     imgWidth = 1792,
-                                     imgHeight = 1024,
-                                     parallaxIntensity = 0.5
+                                     imgWidth = 1792, // 圖片寬度
+                                     imgHeight = 1024, // 圖片高度
+                                     parallaxIntensity = 0.5, // 視差程度，0~1
                                  }) => {
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -62,6 +62,6 @@ const ParallaxBackgroundImage = ({
     );
 };
 
-export default ParallaxBackgroundImage;
+export default ParallaxImage;
 
 
