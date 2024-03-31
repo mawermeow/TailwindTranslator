@@ -50,7 +50,7 @@ const classToCss = {
     mx: ['margin-left', 'margin-right'],
     my: ['margin-top', 'margin-bottom'],
     aspect: 'aspect-ratio',
-    text: 'text',
+    text: 'font-size',
     z:'z-index',
     "max-h":'max-height',
     "min-h":'min-height',
