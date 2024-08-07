@@ -106,7 +106,7 @@ export const formatCss = (classText) => {
         normal: "",
         // 初始化所有偽類的樣式為空字串
         ...Object.fromEntries(Object.keys(pseudoClasses).map(key => [key, ""])),
-        xs: "", md: "", lg: "", xl: "", '2xl': "",
+        sm: "", md: "", lg: "", xl: "", '2xl': "",
     };
 
     classText.split(' ').forEach(el => {
