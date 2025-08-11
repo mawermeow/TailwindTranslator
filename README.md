@@ -3,6 +3,24 @@
 [乾淨的Demo](https://tailwind-translator.mawer.cc/)
 [含範例的Demo](https://tailwind-translator.mawer.cc/?cheat=example-one)
 
+## 系統要求
+
+- Node.js 22.0.0 或更高版本
+- npm 10.0.0 或更高版本
+
+## 安裝和運行
+
+```bash
+# 安裝依賴項
+npm install
+
+# 啟動開發伺服器
+npm start
+
+# 建置生產版本
+npm run build
+```
+
 ### 資料來源
 在[這個網頁](https://flowbite.com/tools/tailwind-cheat-sheet/)中抓取基本的 Tailwind 資料：
 然後他的 bg-gradient-to 有點問題，需手動調整。
